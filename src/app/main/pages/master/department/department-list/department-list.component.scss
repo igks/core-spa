@@ -1,0 +1,49 @@
+@import "src/@fuse/scss/fuse";
+
+#my-container {
+    .top-bg {
+        @include media-breakpoint("lt-md") {
+            height: 230px;
+        }
+        height: 230px;
+    }
+
+    > .center {
+        > .header {
+            @include media-breakpoint("lt-md") {
+                padding: 4px 0;
+                height: 150px !important;
+                min-height: 150px !important;
+                max-height: 150px !important;
+            }
+        }
+    }
+}
+
+.custom-table {
+    flex: 1 1 auto;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+
+    .mat-header-row {
+        min-height: 50px;
+    }
+
+    .data {
+        position: relative;
+        cursor: pointer;
+        height: 50px;
+    }
+
+    .mat-cell {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.text-header {
+    font-size: 20px;
+    font-weight: bold;
+}
