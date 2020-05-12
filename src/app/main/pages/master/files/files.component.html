@@ -45,15 +45,22 @@
         <div
             fxLayoutAlign="center center"
             fxLayout.gt-xs="row"
-            fxLayoutAlign.gt-xs="space-between center"
+            fxLayoutAlign.gt-xs="start center"
             class="mb-8"
         >
-            <!-- ADD BUTTON -->
             <app-upload
                 [disabled]="showProgress"
                 (uploadStatus)="uploadStatus($event)"
             ></app-upload>
-            <!-- / ADD BUTTON -->
+
+            <button
+                mat-raised-button
+                class="add-product-button ml-8"
+                (click)="createFile()"
+            >
+                <mat-icon class="mr-8">create</mat-icon>
+                <span>CREATE FILE</span>
+            </button>
         </div>
 
         <!-- CONTENT CARD -->
@@ -129,7 +136,11 @@
                                     (downloadStatus)="downloadStatus($event)"
                                 >
                                 </app-download>
-                                <button mat-menu-item aria-label="remove">
+                                <button
+                                    mat-menu-item
+                                    aria-label="remove"
+                                    (click)="deleteFile(file.name)"
+                                >
                                     <mat-icon>delete</mat-icon>
                                     <span>Remove</span>
                                 </button>

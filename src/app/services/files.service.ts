@@ -15,12 +15,16 @@ export class FilesService {
     private baseApiUrl: string;
     private apiDownloadUrl: string;
     private apiUploadUrl: string;
+    private apiDeleteUrl: string;
+    private apiCreateUrl: string;
     private apiFileUrl: string;
 
     constructor(private http: HttpClient) {
         this.baseApiUrl = environment.apiUrl;
         this.apiDownloadUrl = this.baseApiUrl + "files/download";
         this.apiUploadUrl = this.baseApiUrl + "files/upload";
+        this.apiDeleteUrl = this.baseApiUrl + "files/delete";
+        this.apiCreateUrl = this.baseApiUrl + "files/create";
         this.apiFileUrl = this.baseApiUrl + "files/file-list";
     }
 
@@ -51,5 +55,13 @@ export class FilesService {
 
     public getFiles(): Observable<string[]> {
         return this.http.get<string[]>(this.apiFileUrl);
+    }
+
+    public deleteFile(file: string): Observable<string> {
+        return this.http.delete<string>(`${this.apiDeleteUrl}?file=${file}`);
+    }
+
+    public createFile(): Observable<string> {
+        return this.http.post<string>(this.apiCreateUrl, null);
     }
 }

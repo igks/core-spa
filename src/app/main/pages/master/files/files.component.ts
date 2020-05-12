@@ -41,6 +41,18 @@ export class FilesComponent implements OnInit {
         });
     }
 
+    private createFile() {
+        this.service.createFile().subscribe(() => {
+            this.getFiles();
+        });
+    }
+
+    private deleteFile(file: string) {
+        this.service.deleteFile(file).subscribe(() => {
+            this.getFiles();
+        });
+    }
+
     public downloadStatus(event: ProgressStatus) {
         switch (event.status) {
             case ProgressStatusEnum.START:
