@@ -7,45 +7,42 @@ import { Department } from "app/models/department.model";
 import { PaginatedResult } from "app/models/pagination.model";
 
 @Injectable({
-    providedIn: "root"
+    providedIn: "root",
 })
 export class DepartmentService {
-    baseUrl = environment.apiUrl;
-    itemPerPage = 5;
+    private baseUrl = environment.apiUrl;
+    public itemPerPage = 5;
 
     constructor(private http: HttpClient) {}
 
-    // get department report
     getDepartmentReport() {
         return this.http.get(this.baseUrl + "report/department/");
     }
-    // for add data department
+
     addDepartment(model: any) {
         return this.http.post(this.baseUrl + "department/", model);
     }
 
-    // for delete data department
     deleteDepartment(id: any) {
         return this.http.delete(this.baseUrl + "department/" + id);
     }
-    // get by ID after update
+
     getDepartment(id: any): Observable<Department> {
         return this.http.get<Department>(this.baseUrl + "department/" + id);
     }
-    // for edit department
+
     editDepartment(id: any, model: any) {
         return this.http.put(this.baseUrl + "department/" + id, model);
     }
 
-    // get all
     getDepartments(
         page?,
         itemsPerPage?,
         departmentParams?
     ): Observable<PaginatedResult<Department[]>> {
-        const paginatedResult: PaginatedResult<Department[]> = new PaginatedResult<
+        const paginatedResult: PaginatedResult<
             Department[]
-        >();
+        > = new PaginatedResult<Department[]>();
 
         let params = new HttpParams();
         if (page != null && itemsPerPage != null) {
@@ -68,10 +65,10 @@ export class DepartmentService {
         return this.http
             .get<Department[]>(this.baseUrl + "department/paged", {
                 observe: "response",
-                params
+                params,
             })
             .pipe(
-                map(response => {
+                map((response) => {
                     paginatedResult.result = response.body;
                     if (response.headers.get("Pagination") != null) {
                         paginatedResult.pagination = JSON.parse(
@@ -81,17 +78,5 @@ export class DepartmentService {
                     return paginatedResult;
                 })
             );
-    }
-
-    handleError(error) {
-        let errorMessage = "";
-        if (error.error instanceof ErrorEvent) {
-            // client-side error
-            errorMessage = `Error: ${error.error.message}`;
-        } else {
-            // server-side error
-            errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.headers}`;
-        }
-        return throwError(errorMessage);
     }
 }

@@ -28,6 +28,9 @@ import { DepartmentListComponent } from "./department/department-list/department
 import { DepartmentService } from "app/services/department.service";
 import { AuthGuard } from "app/guards/auth.guard";
 import { DepartmentFormComponent } from "./department/department-form/department-form.component";
+import { FilesComponent } from "./files/files.component";
+import { UploadComponent } from "app/layout/components/upload/upload.component";
+import { DownloadComponent } from "app/layout/components/download/download.component";
 
 const routes: Routes = [
     {
@@ -41,12 +44,10 @@ const routes: Routes = [
                 resolve: {
                     department: DepartmentListResolver,
                 },
-                pathMatch: "full",
             },
             {
                 path: "master/department/form",
                 component: DepartmentFormComponent,
-                pathMatch: "full",
             },
             {
                 path: "master/department/form/:id",
@@ -54,14 +55,23 @@ const routes: Routes = [
                 resolve: {
                     department: DepartmentDetailResolver,
                 },
-                pathMatch: "full",
+            },
+            {
+                path: "master/files",
+                component: FilesComponent,
             },
         ],
     },
 ];
 
 @NgModule({
-    declarations: [DepartmentListComponent, DepartmentFormComponent],
+    declarations: [
+        DepartmentListComponent,
+        DepartmentFormComponent,
+        FilesComponent,
+        UploadComponent,
+        DownloadComponent,
+    ],
     imports: [
         RouterModule.forChild(routes),
         MatButtonModule,

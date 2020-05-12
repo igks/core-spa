@@ -1,0 +1,161 @@
+<div id="my-container" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="accent top-bg"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div
+            class="header accent"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center"
+        >
+            <!-- APP TITLE -->
+            <div
+                class="logo mb-md-0"
+                fxLayout="row"
+                fxLayoutAlign="start center"
+            >
+                <mat-icon
+                    class="logo-icon s-32 mr-16"
+                    [@animate]="{
+                        value: '*',
+                        params: { delay: '300ms', scale: '0.2' }
+                    }"
+                >
+                    attach_file
+                </mat-icon>
+                <span
+                    class="logo-text h1"
+                    [@animate]="{
+                        value: '*',
+                        params: { delay: '300ms', x: '-25px' }
+                    }"
+                >
+                    Files Manager
+                </span>
+            </div>
+
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+        <div
+            fxLayoutAlign="center center"
+            fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center"
+            class="mb-8"
+        >
+            <!-- ADD BUTTON -->
+            <app-upload
+                [disabled]="showProgress"
+                (uploadStatus)="uploadStatus($event)"
+            ></app-upload>
+            <!-- / ADD BUTTON -->
+        </div>
+
+        <!-- CONTENT CARD -->
+        <div
+            *ngIf="fileList.length == 0 && !showProgress"
+            class="content-card"
+            fxLayout="row"
+            fxLayoutAlign="center center"
+            fxFlex="1 0 auto"
+            fxLayoutAlign.gt-xs="center center"
+        >
+            <h2>No Data Available...</h2>
+        </div>
+        <div
+            *ngIf="showProgress"
+            class="content-card"
+            fxLayout="row"
+            fxLayoutAlign="center center"
+            fxFlex="1 0 auto"
+            fxLayoutAlign.gt-xs="center center"
+        >
+            <h2>
+                Uploading progress <strong>{{ percentage }}%</strong>
+            </h2>
+        </div>
+        <div *ngIf="fileList.length != 0 && !showProgress" class="content-card">
+            <mat-table
+                class="custom-table"
+                #table
+                [dataSource]="fileList"
+                matSort
+                [@animateStagger]="{ value: '50' }"
+                fusePerfectScrollbar
+                matSort
+                (matSortChange)="sortChange($event)"
+            >
+                <!-- Code Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        class="text-header accent-fg"
+                        >File Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let file">
+                        <p class="text-truncate">{{ file.name }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Buttons Column -->
+                <ng-container matColumnDef="buttons">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        class="text-header accent-fg"
+                        >Option</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let file">
+                        <div fxFlex="row" fxLayoutAlign="start center">
+                            <button
+                                mat-icon-button
+                                [matMenuTriggerFor]="moreMenu"
+                                aria-label="More"
+                                (click)="$event.stopPropagation()"
+                            >
+                                <mat-icon class="secondary-text"
+                                    >more_vert</mat-icon
+                                >
+                            </button>
+
+                            <mat-menu #moreMenu="matMenu">
+                                <app-download
+                                    [fileName]="file.name"
+                                    (downloadStatus)="downloadStatus($event)"
+                                >
+                                </app-download>
+                                <button mat-menu-item aria-label="remove">
+                                    <mat-icon>delete</mat-icon>
+                                    <span>Remove</span>
+                                </button>
+                            </mat-menu>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row
+                    *matHeaderRowDef="displayedColumns; sticky: true"
+                ></mat-header-row>
+
+                <mat-row
+                    *matRowDef="let data; columns: displayedColumns"
+                    class="data"
+                    matRipple
+                >
+                </mat-row>
+            </mat-table>
+
+            <!-- <mat-paginator #paginator [length]="pagination.totalItems" [pageIndex]="pagination.currentPage - 1"
+                [pageSize]="pagination.pageSize" [pageSizeOptions]="[5, 10, 25, 50]" (page)="pageEvents($event)"
+                showFirstLastButtons="true">
+            </mat-paginator> -->
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

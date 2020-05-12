@@ -1,0 +1,9 @@
+<button
+    mat-menu-item
+    [disabled]="disabled"
+    [ngClass]="{ disabled: disabled }"
+    (click)="download()"
+>
+    <mat-icon>cloud_download</mat-icon>
+    <span>Download</span>
+</button>
