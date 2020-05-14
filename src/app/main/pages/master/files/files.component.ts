@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, ViewEncapsulation, ViewChild } from "@angular/core";
 import { FilesService } from "app/services/files.service";
 import { ProgressStatus, ProgressStatusEnum } from "app/models/progress.model";
 import { fuseAnimations } from "@fuse/animations";
+import { PaginatedResult, Pagination } from "app/models/pagination.model";
+import { MatPaginator } from "@angular/material/paginator";
 
 @Component({
     selector: "app-files",
@@ -11,8 +13,9 @@ import { fuseAnimations } from "@fuse/animations";
     encapsulation: ViewEncapsulation.None,
 })
 export class FilesComponent implements OnInit {
-    public files: string[];
-    public fileList: any = [];
+    @ViewChild(MatPaginator, { static: true })
+    paginator: MatPaginator;
+
     public fileInDownload: string;
     public percentage: number;
     public showProgress: boolean;
@@ -21,6 +24,13 @@ export class FilesComponent implements OnInit {
 
     displayedColumns: string[] = ["name", "buttons"];
 
+    public fileList: FileList[];
+    private pagination: Pagination;
+    private filesParams: any = {};
+
+    isFiltered: boolean = false;
+    showFilterForm: boolean = false;
+
     constructor(private service: FilesService) {}
 
     ngOnInit() {
@@ -28,17 +38,15 @@ export class FilesComponent implements OnInit {
     }
 
     private getFiles() {
-        this.fileList.length = 0;
-        this.service.getFiles().subscribe((data) => {
-            this.files = data;
-            this.files.map((file) => {
-                let fileName = file.split("\\");
-                this.fileList.push({
-                    link: file,
-                    name: fileName[fileName.length - 1],
-                });
-            });
-        });
+        this.service.getFiles().subscribe(
+            (res: PaginatedResult<FileList[]>) => {
+                this.fileList = res.result;
+                this.pagination = res.pagination;
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
     }
 
     private createFile() {
