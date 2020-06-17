@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <StiSerializer version="1.02" type="Net" application="StiReport">
   <BeginRenderEvent>
-</BeginRenderEvent>
+  </BeginRenderEvent>
   <CalculationMode>Interpretation</CalculationMode>
   <Culture>en-US</Culture>
   <Dictionary Ref="1" type="Dictionary" isKey="true">
@@ -295,7 +295,7 @@
               <Name>Text304</Name>
               <Page isRef="6" />
               <Parent isRef="21" />
-              <Text>Bus And Meal Application</Text>
+              <Text>Report Demo</Text>
               <TextBrush>[43:43:43]</TextBrush>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -508,7 +508,7 @@ namespace Reports
 		#endregion StiReport Designer generated code - do not modify
     }
 }
-</Script>
+  </Script>
   <ScriptLanguage>CSharp</ScriptLanguage>
   <Styles isList="true" count="80">
     <Black_x0020_Primitive_x0020_Line Ref="32" type="Stimulsoft.Report.StiStyle" isKey="true">
