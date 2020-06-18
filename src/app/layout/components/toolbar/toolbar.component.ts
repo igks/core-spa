@@ -28,6 +28,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     userStatusOptions: any[];
 
     isAuthenticated: boolean = false;
+    currentUser: string = "";
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -120,6 +121,14 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
         // authentication check
         this.isAuthenticated = this.authService.isAuthenticated();
+        this.currentUser = localStorage.getItem("username");
+        if (
+            this.currentUser === null ||
+            this.currentUser === "" ||
+            this.currentUser === "null"
+        ) {
+            this.currentUser = "New User";
+        }
     }
 
     /**
@@ -172,8 +181,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     }
 
     logout() {
-        localStorage.removeItem("token");
-        localStorage.removeItem("username");
+        localStorage.clear();
         this.alert.Success(
             "Logout Success",
             "You have been logout from the application."

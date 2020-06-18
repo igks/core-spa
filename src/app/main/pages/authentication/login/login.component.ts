@@ -58,26 +58,31 @@ export class LoginComponent implements OnInit {
      */
     ngOnInit(): void {
         this.loginForm = this._formBuilder.group({
-            username: ["", Validators.required],
+            email: ["", [Validators.required, Validators.email]],
             password: ["", Validators.required],
         });
     }
 
     //Own function
     login() {
-        this.alert.Success("Login Success", "");
-        this.router.navigate(["/dashboard"]);
-
-        // this.authService.login(this.loginForm.value).subscribe(
-        //     next => {
-        //         this.alert.Success("Login Success", "");
-        //     },
-        //     error => {
-        //         this.alert.Error(error.statusText, "");
-        //     },
-        //     () => {
-        //         this.router.navigate(["/apps"]);
-        //     }
-        // );
+        this.authService.login(this.loginForm.value).subscribe(
+            (next) => {
+                this.alert.Success("Login Success", "");
+                this.router.navigate(["/dashboard"]);
+            },
+            (error) => {
+                if (error == "Unauthorized") {
+                    this.alert.Error(
+                        error + "!",
+                        "Seem you don't have an account! Please check your credential or click create account to create new account."
+                    );
+                } else {
+                    this.alert.Error(
+                        "Connection refused!",
+                        "Can not reach the API, please check your internet connection!"
+                    );
+                }
+            }
+        );
     }
 }

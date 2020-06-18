@@ -14,17 +14,14 @@ export class AuthGuard implements CanActivate {
     ) {}
 
     canActivate(): boolean {
-        return true;
-
         if (this.authService.isAuthenticated()) {
             return true;
         }
-
         this.alert.Error(
             "You are not authenticated",
             "Please login to the application"
         );
-        this.router.navigate(["/auth/login"]);
+        this.router.navigate(["pages/auth/login"]);
         return false;
     }
 }

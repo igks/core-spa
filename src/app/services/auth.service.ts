@@ -21,14 +21,21 @@ export class AuthService {
                 const user = response;
                 if (user) {
                     localStorage.setItem("token", user.token);
-                    localStorage.setItem("username", user.user.username);
+                    localStorage.setItem("username", user.userData.firstname);
                 }
             })
         );
     }
 
+    register(model: any) {
+        return this.http.post(this.baseUrl + "auth/register/", model).pipe(
+            map((response: any) => {
+                const user = response;
+            })
+        );
+    }
+
     isAuthenticated() {
-        return true;
         const token = localStorage.getItem("token") || undefined;
         return !this.jwtHelper.isTokenExpired(token);
     }

@@ -25,13 +25,11 @@ import { AppStoreModule } from "app/store/store.module";
 import { LayoutModule } from "app/layout/layout.module";
 import { LoginModule } from "./main/pages/authentication/login/login.module";
 import { AuthService } from "./services/auth.service";
-import { AuthGuard } from "./guards/auth.guard";
 import { FakeDbService } from "./fake-db/fake-db.service";
 import { ToastrModule } from "ngx-toastr";
 import { MatDialogModule } from "@angular/material/dialog";
 import { ConfirmDialogModule } from "./layout/components/confirm-dialog/confirm-dialog.module";
 import { AuthInterceptor } from "./services/auth.interceptor";
-import { BlankComponent } from "./main/ui/page-layouts/blank/blank.component";
 import { ErrorInterceptorProvider } from "./services/error.interceptor";
 import { DashboardComponent } from "./main/dummy/dashboard/dashboard.component";
 import { Report1Component } from "./main/dummy/report1/report1.component";
@@ -40,6 +38,10 @@ import { Transaction1Component } from "./main/dummy/transaction1/transaction1.co
 import { Transaction2Component } from "./main/dummy/transaction2/transaction2.component";
 
 const appRoutes: Routes = [
+    {
+        path: "register",
+        redirectTo: "pages/auth/register",
+    },
     {
         path: "dashboard",
         component: DashboardComponent,
@@ -66,7 +68,7 @@ const appRoutes: Routes = [
     },
     {
         path: "**",
-        redirectTo: "auth/login",
+        redirectTo: "pages/auth/login",
     },
 ];
 
@@ -121,42 +123,3 @@ const appRoutes: Routes = [
     ],
 })
 export class AppModule {}
-
-// Old route
-// const appRoutes: Routes = [
-//     {
-//         path: "login",
-//         redirectTo: "auth/login",
-//     },
-//     {
-//         path: "apps",
-//         loadChildren: "./main/apps/apps.module#AppsModule",
-//         canActivate: [AuthGuard],
-//     },
-//     {
-//         path: "pages",
-//         loadChildren: "./main/pages/pages.module#PagesModule",
-//         canActivate: [AuthGuard],
-//     },
-//     {
-//         path: "ui",
-//         loadChildren: "./main/ui/ui.module#UIModule",
-//         canActivate: [AuthGuard],
-//     },
-//     {
-//         path: "documentation",
-//         loadChildren:
-//             "./main/documentation/documentation.module#DocumentationModule",
-//         canActivate: [AuthGuard],
-//     },
-//     {
-//         path: "angular-material-elements",
-//         loadChildren:
-//             "./main/angular-material-elements/angular-material-elements.module#AngularMaterialElementsModule",
-//         canActivate: [AuthGuard],
-//     },
-//     {
-//         path: "**",
-//         redirectTo: "auth/login",
-//     },
-// ];
