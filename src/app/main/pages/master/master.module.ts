@@ -41,6 +41,7 @@ import { UserDetailComponent } from "./user/user-detail/user-detail.component";
 import { FilesComponent } from "./files/files.component";
 import { UploadComponent } from "app/layout/components/upload/upload.component";
 import { DownloadComponent } from "app/layout/components/download/download.component";
+import { FileListResolver } from "app/resolvers/file-manager-resolver";
 
 const routes: Routes = [
     {
@@ -94,6 +95,9 @@ const routes: Routes = [
             {
                 path: "master/files",
                 component: FilesComponent,
+                resolve: {
+                    file: FileListResolver,
+                },
             },
         ],
     },
@@ -142,6 +146,7 @@ const routes: Routes = [
         UserService,
         UserListResolver,
         UserDetailResolver,
+        FileListResolver,
     ],
 })
 export class MasterModule {}

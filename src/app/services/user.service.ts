@@ -1,5 +1,10 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import {
+    HttpClient,
+    HttpParams,
+    HttpEvent,
+    HttpRequest,
+} from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { map, retry, catchError } from "rxjs/operators";
 import { environment } from "environments/environment";
@@ -19,12 +24,18 @@ export class UserService {
         return this.http.get<User>(this.baseUrl + "user/" + id);
     }
 
-    addUser(model: any) {
-        return this.http.post(this.baseUrl + "user/", model);
+    addUser(model: any): Observable<User> {
+        return this.http.post<User>(this.baseUrl + "user/", model);
     }
 
-    editUser(id: any, model: any) {
-        return this.http.put(this.baseUrl + "user/" + id, model);
+    editUser(id: any, model: any): Observable<User> {
+        return this.http.put<User>(this.baseUrl + "user/" + id, model);
+    }
+
+    uploadPhoto(id: any, file: Blob): Observable<User> {
+        const formData = new FormData();
+        formData.append("file", file);
+        return this.http.put<User>(this.baseUrl + "user/photo/" + id, formData);
     }
 
     deleteUser(id: any) {

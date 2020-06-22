@@ -4,6 +4,7 @@ import { ProgressStatus, ProgressStatusEnum } from "app/models/progress.model";
 import { fuseAnimations } from "@fuse/animations";
 import { PaginatedResult, Pagination } from "app/models/pagination.model";
 import { MatPaginator } from "@angular/material/paginator";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
     selector: "app-files",
@@ -31,14 +32,20 @@ export class FilesComponent implements OnInit {
     isFiltered: boolean = false;
     showFilterForm: boolean = false;
 
-    constructor(private service: FilesService) {}
+    constructor(
+        private fileService: FilesService,
+        private route: ActivatedRoute
+    ) {}
 
     ngOnInit() {
-        this.getFiles();
+        this.route.data.subscribe((data) => {
+            this.fileList = data.file.result;
+            this.pagination = data.file.pagination;
+        });
     }
 
     private getFiles() {
-        this.service.getFiles().subscribe(
+        this.fileService.getFiles().subscribe(
             (res: PaginatedResult<FileList[]>) => {
                 this.fileList = res.result;
                 this.pagination = res.pagination;
@@ -50,13 +57,13 @@ export class FilesComponent implements OnInit {
     }
 
     private createFile() {
-        this.service.createFile().subscribe(() => {
+        this.fileService.createFile().subscribe(() => {
             this.getFiles();
         });
     }
 
     private deleteFile(file: string) {
-        this.service.deleteFile(file).subscribe(() => {
+        this.fileService.deleteFile(file).subscribe(() => {
             this.getFiles();
         });
     }

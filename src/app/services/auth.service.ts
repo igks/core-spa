@@ -22,6 +22,7 @@ export class AuthService {
                 if (user) {
                     localStorage.setItem("token", user.token);
                     localStorage.setItem("username", user.userData.firstname);
+                    localStorage.setItem("userId", user.userData.id);
                 }
             })
         );

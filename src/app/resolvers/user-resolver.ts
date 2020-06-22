@@ -3,9 +3,8 @@ import { Resolve, Router, ActivatedRouteSnapshot } from "@angular/router";
 import { Observable, of } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { AlertService } from "app/services/alert.service";
-import { User } from "../models/user.model"
-import { UserService } from "app/services/user.service"
-
+import { User } from "../models/user.model";
+import { UserService } from "app/services/user.service";
 
 @Injectable()
 export class UserListResolver implements Resolve<User[]> {
@@ -20,15 +19,13 @@ export class UserListResolver implements Resolve<User[]> {
     resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
         this.pageNumber = 1;
         this.pageSize = this.userService.itemPerPage;
-        return this.userService
-            .getUsers(this.pageNumber, this.pageSize)
-            .pipe(
-                catchError(error => {
-                    this.alert.Error("", error.statusText);
-                    this.router.navigate(["/dashboard"]);
-                    return of(null);
-                })
-            );
+        return this.userService.getUsers(this.pageNumber, this.pageSize).pipe(
+            catchError((error) => {
+                this.alert.Error("", error.statusText);
+                this.router.navigate(["/dashboard"]);
+                return of(null);
+            })
+        );
     }
 }
 
@@ -42,7 +39,7 @@ export class UserDetailResolver implements Resolve<User> {
 
     resolve(route: ActivatedRouteSnapshot): Observable<User> {
         return this.userService.getUser(route.params.id).pipe(
-            catchError(error => {
+            catchError((error) => {
                 this.alert.Error("", error.statusText);
                 this.router.navigate(["/pages/master/user"]);
                 return of(null);
@@ -61,7 +58,7 @@ export class UserReportResolver implements Resolve<User[]> {
 
     resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
         return this.userService.getUserReport().pipe(
-            catchError(error => {
+            catchError((error) => {
                 this.alert.Error("", error);
                 this.router.navigate(["/pages/master/user"]);
                 return of(null);

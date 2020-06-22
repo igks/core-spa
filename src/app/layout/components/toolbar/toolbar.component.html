@@ -127,7 +127,10 @@
                     <mat-icon>exit_to_app</mat-icon>
                     <span>Logout</span>
                 </button>
-                <button mat-menu-item (click)="logout()">
+                <button
+                    mat-menu-item
+                    [routerLink]="['/pages/master/user/form/' + userId]"
+                >
                     <mat-icon>person</mat-icon>
                     <span>Edit Profile</span>
                 </button>

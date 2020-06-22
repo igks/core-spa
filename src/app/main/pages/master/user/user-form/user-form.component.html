@@ -98,15 +98,6 @@
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Photo</mat-label>
-                    <input
-                        matInput
-                        formControlName="photo"
-                        autocomplete="off"
-                    />
-                </mat-form-field>
-
                 <mat-form-field *ngIf="!isUpdate" appearance="outline">
                     <mat-label>Email</mat-label>
                     <input
@@ -133,6 +124,19 @@
                         Password is required
                     </mat-error>
                 </mat-form-field>
+
+                <mat-label class="mb-12">Photo</mat-label>
+                <div 
+                    fxLayout="column"
+                    fxLayoutAlign="start center"
+                    fxLayout.gt-xs="row"
+                    class="mb-24" >
+                <img class="image-profile" [src]="imgURL" *ngIf="imgURL" />
+                <mat-error *ngIf="message">
+                    {{ message }}
+                </mat-error>
+                <input type="file" (change)="getPhoto($event)" value="user.photo" />
+                </div>
 
                 <div
                     fxLayout="column"

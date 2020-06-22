@@ -29,6 +29,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
     isAuthenticated: boolean = false;
     currentUser: string = "";
+    userId = localStorage.getItem("userId");
 
     // Private
     private _unsubscribeAll: Subject<any>;

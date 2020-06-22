@@ -12,6 +12,7 @@ import {
     AbstractControl,
     ValidationErrors,
 } from "@angular/forms";
+import { environment } from "environments/environment";
 
 @Component({
     selector: "app-user-form",
@@ -24,6 +25,10 @@ export class UserFormComponent implements OnInit {
     id = +this.route.snapshot.params.id;
     user: User;
     isUpdate: boolean = false;
+    rootUrl: any = environment.rootUrl;
+    imgURL: any;
+    message: string;
+    photoFile: any;
     form: FormGroup;
 
     constructor(
@@ -46,7 +51,6 @@ export class UserFormComponent implements OnInit {
                 lastname: ["", [Validators.required]],
                 address: ["", [Validators.required]],
                 phoneNumber: ["", [phoneValidator]],
-                photo: [""],
             });
         } else {
             this.form = this.formBuilder.group({
@@ -54,7 +58,6 @@ export class UserFormComponent implements OnInit {
                 lastname: ["", [Validators.required]],
                 address: ["", [Validators.required]],
                 phoneNumber: ["", [phoneValidator]],
-                photo: [""],
                 email: ["", [Validators.required]],
                 password: ["", [Validators.required]],
             });
@@ -66,6 +69,7 @@ export class UserFormComponent implements OnInit {
             this.isUpdate = true;
             this.route.data.subscribe((data) => {
                 this.user = data.user;
+                this.imgURL = `${this.rootUrl}${data.user.photo}`;
             });
 
             this.form.setValue({
@@ -73,7 +77,6 @@ export class UserFormComponent implements OnInit {
                 lastname: this.user.lastname,
                 address: this.user.address,
                 phoneNumber: this.user.phoneNumber,
-                photo: this.user.photo,
             });
         }
     }
@@ -88,12 +91,21 @@ export class UserFormComponent implements OnInit {
 
     addNewUser() {
         this.userService.addUser(this.form.value).subscribe(
-            () => {
-                this.alert.Success(
-                    "Add Successfully",
-                    "Data has been added to the record"
+            (data) => {
+                this.userService.uploadPhoto(data.id, this.photoFile).subscribe(
+                    (data) => {
+                        console.log(data);
+
+                        this.alert.Success(
+                            "Add Successfully",
+                            "Data has been added to the record"
+                        );
+                        this.router.navigate(["pages/master/user"]);
+                    },
+                    (error) => {
+                        this.alert.Error("", error);
+                    }
                 );
-                this.router.navigate(["pages/master/user"]);
             },
             (error) => {
                 this.alert.Error("", error);
@@ -103,14 +115,46 @@ export class UserFormComponent implements OnInit {
 
     updateUser() {
         this.userService.editUser(this.id, this.form.value).subscribe(
-            () => {
-                this.alert.Success("Edit Successfully", "Data has been edited");
-                this.router.navigate(["pages/master/user"]);
+            (data) => {
+                this.userService.uploadPhoto(data.id, this.photoFile).subscribe(
+                    (data) => {
+                        this.alert.Success(
+                            "Edit Successfully",
+                            "Data has been edited, new photo has been added"
+                        );
+                        this.router.navigate(["pages/master/user"]);
+                    },
+                    (error) => {
+                        this.alert.Error("", error);
+                    }
+                );
             },
             (error) => {
                 this.alert.Error("", error);
             }
         );
+    }
+
+    getPhoto(event: any) {
+        let files = event.target.files;
+        if (files.length === 0) {
+            return;
+        }
+
+        var mimeType = files[0].type;
+        if (mimeType.match(/image\/*/) == null) {
+            this.message = "Only images are supported.";
+            this.imgURL = null;
+            return;
+        }
+
+        var reader = new FileReader();
+        reader.readAsDataURL(files[0]);
+        reader.onload = (_event) => {
+            this.imgURL = reader.result;
+            this.message = null;
+            this.photoFile = files[0];
+        };
     }
 }
 
