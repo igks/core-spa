@@ -88,6 +88,10 @@
                     <mat-icon>bookmark_border</mat-icon>
                     <span>Department</span>
                 </button>
+                <button mat-menu-item [routerLink]="'/pages/master/user'">
+                    <mat-icon>bookmark_border</mat-icon>
+                    <span>User</span>
+                </button>
                 <button mat-menu-item [routerLink]="'/pages/master/files'">
                     <mat-icon>bookmark_border</mat-icon>
                     <span>File Manager</span>
@@ -122,6 +126,10 @@
                 <button mat-menu-item (click)="logout()">
                     <mat-icon>exit_to_app</mat-icon>
                     <span>Logout</span>
+                </button>
+                <button mat-menu-item (click)="logout()">
+                    <mat-icon>person</mat-icon>
+                    <span>Edit Profile</span>
                 </button>
             </mat-menu>
         </div>

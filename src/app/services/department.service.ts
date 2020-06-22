@@ -11,28 +11,28 @@ import { PaginatedResult } from "app/models/pagination.model";
 })
 export class DepartmentService {
     private baseUrl = environment.apiUrl;
-    public itemPerPage = 5;
+    public itemPerPage = environment.itemPerPage;
 
     constructor(private http: HttpClient) {}
 
-    getDepartmentReport() {
-        return this.http.get(this.baseUrl + "report/department/");
+    getDepartment(id: any): Observable<Department> {
+        return this.http.get<Department>(this.baseUrl + "department/" + id);
     }
 
     addDepartment(model: any) {
         return this.http.post(this.baseUrl + "department/", model);
     }
 
+    editDepartment(id: any, model: any) {
+        return this.http.put(this.baseUrl + "department/" + id, model);
+    }
+
     deleteDepartment(id: any) {
         return this.http.delete(this.baseUrl + "department/" + id);
     }
 
-    getDepartment(id: any): Observable<Department> {
-        return this.http.get<Department>(this.baseUrl + "department/" + id);
-    }
-
-    editDepartment(id: any, model: any) {
-        return this.http.put(this.baseUrl + "department/" + id, model);
+    getDepartmentReport() {
+        return this.http.get(this.baseUrl + "report/department/");
     }
 
     getDepartments(
@@ -58,7 +58,7 @@ export class DepartmentService {
             }
             if (departmentParams.OrderBy != null) {
                 params = params.append("OrderBy", departmentParams.OrderBy);
-                params = params.append("isDescending", departmentParams.isDesc);
+                params = params.append("isDescending", departmentParams.isDescending);
             }
         }
 

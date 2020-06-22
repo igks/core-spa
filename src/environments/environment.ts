@@ -5,7 +5,8 @@
 export const environment = {
     production: false,
     hmr: false,
-    apiUrl: "http://localhost:5000/api/"
+    apiUrl: "http://localhost:5000/api/",
+    itemPerPage: 5
 };
 
 /*

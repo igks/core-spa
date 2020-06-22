@@ -1,0 +1,165 @@
+<div id="my-container" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div
+            class="header accent"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center"
+        >
+            <!-- APP TITLE -->
+            <div
+                class="logo mb-24 mb-md-0"
+                fxLayout="row"
+                fxLayoutAlign="start center"
+            >
+                <mat-icon
+                    class="logo-icon s-32 mr-16"
+                    [@animate]="{
+                        value: '*',
+                        params: { delay: '300ms', scale: '0.2' }
+                    }"
+                >
+                    library_books
+                </mat-icon>
+                <span
+                    class="logo-text h1"
+                    [@animate]="{
+                        value: '*',
+                        params: { delay: '300ms', x: '-25px' }
+                    }"
+                >
+                    {{ isUpdate ? "Edit User" : "Add New User" }}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+        <div class="content-card my-8" fusePerfectScrollbar>
+            <form
+                class="content-card p-24 mr-24"
+                fxLayout="column"
+                fxLayoutAlign="start"
+                fxFlex="1 0 auto"
+                name="form"
+                [formGroup]="form"
+            >
+                <mat-form-field appearance="outline">
+                    <mat-label>First Name</mat-label>
+                    <input
+                        matInput
+                        formControlName="firstname"
+                        autocomplete="off"
+                    />
+                    <mat-error>
+                        Firstname is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Last Name</mat-label>
+                    <input
+                        matInput
+                        formControlName="lastname"
+                        autocomplete="off"
+                    />
+                    <mat-error>
+                        Lastname is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Address</mat-label>
+                    <input
+                        matInput
+                        formControlName="address"
+                        autocomplete="off"
+                    />
+                    <mat-error>
+                        Address is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Phone</mat-label>
+                    <input
+                        matInput
+                        formControlName="phoneNumber"
+                        autocomplete="off"
+                    />
+                    <mat-error>
+                        Phone number is invalid
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Photo</mat-label>
+                    <input
+                        matInput
+                        formControlName="photo"
+                        autocomplete="off"
+                    />
+                </mat-form-field>
+
+                <mat-form-field *ngIf="!isUpdate" appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input
+                        *ngIf="!isUpdate"
+                        matInput
+                        formControlName="email"
+                        autocomplete="off"
+                    />
+                    <mat-error>
+                        Email is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="!isUpdate" appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input
+                        *ngIf="!isUpdate"
+                        matInput
+                        type="password"
+                        formControlName="password"
+                        autocomplete="off"
+                    />
+                    <mat-error>
+                        Password is required
+                    </mat-error>
+                </mat-form-field>
+
+                <div
+                    fxLayout="column"
+                    fxLayoutAlign="start center"
+                    fxLayout.gt-xs="row"
+                    class="mb-12"
+                >
+                    <button
+                        mat-raised-button
+                        class="add-product-button mt-24 mt-md-0 fuse-white mr-8"
+                        [routerLink]="'/pages/master/user'"
+                    >
+                        <mat-icon class="mr-8">cancel</mat-icon>
+                        <span>Cancel</span>
+                    </button>
+                    <button
+                        mat-raised-button
+                        class="add-product-button mt-24 mt-md-0 accent-bg fuse-white-fg ml-8"
+                        (click)="submit()"
+                        [disabled]="form.invalid"
+                    >
+                        <mat-icon class="mr-8">archive</mat-icon>
+                        <span>Save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- / CENTER -->
+</div>

@@ -22,7 +22,7 @@ export class FilesService {
     private apiCreateUrl: string;
     private apiFileUrl: string;
 
-    public itemPerPage = 5;
+    public itemPerPage = environment.itemPerPage;
 
     constructor(private http: HttpClient) {
         this.baseApiUrl = environment.apiUrl;

@@ -2,25 +2,26 @@ import { Injectable } from "@angular/core";
 import { Resolve, Router, ActivatedRouteSnapshot } from "@angular/router";
 import { Observable, of } from "rxjs";
 import { catchError } from "rxjs/operators";
-import { Department } from "../models/department.model";
-import { DepartmentService } from "app/services/department.service";
 import { AlertService } from "app/services/alert.service";
+import { User } from "../models/user.model"
+import { UserService } from "app/services/user.service"
+
 
 @Injectable()
-export class DepartmentListResolver implements Resolve<Department[]> {
+export class UserListResolver implements Resolve<User[]> {
     pageNumber: number;
     pageSize: number;
     constructor(
-        private departmentService: DepartmentService,
+        private userService: UserService,
         private router: Router,
         private alert: AlertService
     ) {}
 
-    resolve(route: ActivatedRouteSnapshot): Observable<Department[]> {
+    resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
         this.pageNumber = 1;
-        this.pageSize = this.departmentService.itemPerPage;
-        return this.departmentService
-            .getDepartments(this.pageNumber, this.pageSize)
+        this.pageSize = this.userService.itemPerPage;
+        return this.userService
+            .getUsers(this.pageNumber, this.pageSize)
             .pipe(
                 catchError(error => {
                     this.alert.Error("", error.statusText);
@@ -32,18 +33,18 @@ export class DepartmentListResolver implements Resolve<Department[]> {
 }
 
 @Injectable()
-export class DepartmentDetailResolver implements Resolve<Department> {
+export class UserDetailResolver implements Resolve<User> {
     constructor(
-        private departmentService: DepartmentService,
+        private userService: UserService,
         private router: Router,
         private alert: AlertService
     ) {}
 
-    resolve(route: ActivatedRouteSnapshot): Observable<Department> {
-        return this.departmentService.getDepartment(route.params.id).pipe(
+    resolve(route: ActivatedRouteSnapshot): Observable<User> {
+        return this.userService.getUser(route.params.id).pipe(
             catchError(error => {
                 this.alert.Error("", error.statusText);
-                this.router.navigate(["/pages/master/department"]);
+                this.router.navigate(["/pages/master/user"]);
                 return of(null);
             })
         );
@@ -51,18 +52,18 @@ export class DepartmentDetailResolver implements Resolve<Department> {
 }
 
 @Injectable()
-export class DepartmentReportResolver implements Resolve<Department[]> {
+export class UserReportResolver implements Resolve<User[]> {
     constructor(
-        private departmentService: DepartmentService,
+        private userService: UserService,
         private router: Router,
         private alert: AlertService
     ) {}
 
-    resolve(route: ActivatedRouteSnapshot): Observable<Department[]> {
-        return this.departmentService.getDepartmentReport().pipe(
+    resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
+        return this.userService.getUserReport().pipe(
             catchError(error => {
                 this.alert.Error("", error);
-                this.router.navigate(["/pages/master/department"]);
+                this.router.navigate(["/pages/master/user"]);
                 return of(null);
             })
         );

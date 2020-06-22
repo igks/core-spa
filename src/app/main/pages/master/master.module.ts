@@ -20,14 +20,24 @@ import { MatMenuModule } from "@angular/material/menu";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseWidgetModule } from "@fuse/components/widget/widget.module";
 
+import { AuthGuard } from "app/guards/auth.guard";
 import {
     DepartmentListResolver,
     DepartmentDetailResolver,
 } from "app/resolvers/department-resolver";
-import { DepartmentListComponent } from "./department/department-list/department-list.component";
 import { DepartmentService } from "app/services/department.service";
-import { AuthGuard } from "app/guards/auth.guard";
+import { DepartmentListComponent } from "./department/department-list/department-list.component";
 import { DepartmentFormComponent } from "./department/department-form/department-form.component";
+
+import {
+    UserListResolver,
+    UserDetailResolver,
+} from "app/resolvers/user-resolver";
+import { UserService } from "app/services/user.service";
+import { UserListComponent } from "./user/user-list/user-list.component";
+import { UserFormComponent } from "./user/user-form/user-form.component";
+import { UserDetailComponent } from "./user/user-detail/user-detail.component";
+
 import { FilesComponent } from "./files/files.component";
 import { UploadComponent } from "app/layout/components/upload/upload.component";
 import { DownloadComponent } from "app/layout/components/download/download.component";
@@ -57,6 +67,31 @@ const routes: Routes = [
                 },
             },
             {
+                path: "master/user",
+                component: UserListComponent,
+                resolve: {
+                    user: UserListResolver,
+                },
+            },
+            {
+                path: "master/user/form",
+                component: UserFormComponent,
+            },
+            {
+                path: "master/user/form/:id",
+                component: UserFormComponent,
+                resolve: {
+                    user: UserDetailResolver,
+                },
+            },
+            {
+                path: "master/user/detail/:id",
+                component: UserDetailComponent,
+                resolve: {
+                    user: UserDetailResolver,
+                },
+            },
+            {
                 path: "master/files",
                 component: FilesComponent,
             },
@@ -68,6 +103,9 @@ const routes: Routes = [
     declarations: [
         DepartmentListComponent,
         DepartmentFormComponent,
+        UserListComponent,
+        UserFormComponent,
+        UserDetailComponent,
         FilesComponent,
         UploadComponent,
         DownloadComponent,
@@ -101,6 +139,9 @@ const routes: Routes = [
         DepartmentService,
         DepartmentListResolver,
         DepartmentDetailResolver,
+        UserService,
+        UserListResolver,
+        UserDetailResolver,
     ],
 })
 export class MasterModule {}

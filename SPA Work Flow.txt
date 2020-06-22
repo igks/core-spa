@@ -1,9 +1,9 @@
 ==== Membuat Komponen Baru ====
-1. Buat folder/komponen di folder "src/app/main/pages/master (atau bisa membuat folder baru di dalam page sesuai dengan menu).
-2. Buat model komponen di folder "src/app/models"
-3. Buat service komponen di folder "src/app/services"
-4. Buat resolver komponen di folder "src/app/resolvers"
-5. Tambahkan komponen ke dalam master madule ("src/app/main/pages/master/master.module")
+* Buat model/interface "src/app/models"
+* Buat service "src/app/services"
+* Buat resolver komponen di folder "src/app/resolvers"
+* Buat component "src/app/main/pages/master (atau bisa membuat folder baru didalam page sesuai dengan menu).
+* Tambahkan komponen ke dalam master madule ("src/app/main/pages/master/master.module")
   a. import komponen dan tambahkan dalam list/array declarations
   b. import dan tambahkan komponen service dan komponen resolver ke dalam list/array providers
-  c. buat path untuk komponen pada routes
+  c. buat path untuk komponen pada routes 

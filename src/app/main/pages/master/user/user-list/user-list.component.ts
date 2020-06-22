@@ -2,32 +2,32 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { ActivatedRoute } from "@angular/router";
-import { Department } from "app/models/department.model";
+import { User } from "app/models/user.model";
 import { Pagination, PaginatedResult } from "app/models/pagination.model";
-import { DepartmentService } from "app/services/department.service";
+import { UserService } from "app/services/user.service";
 import { AlertService } from "app/services/alert.service";
 import { fuseAnimations } from "@fuse/animations";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Component({
-    selector: "app-department-list",
-    templateUrl: "./department-list.component.html",
-    styleUrls: ["./department-list.component.scss"],
+    selector: "app-user-list",
+    templateUrl: "./user-list.component.html",
+    styleUrls: ["./user-list.component.scss"],
     animations: fuseAnimations,
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
 })
-export class DepartmentListComponent implements OnInit {
+export class UserListComponent implements OnInit {
     @ViewChild(MatPaginator, { static: true })
     paginator: MatPaginator;
 
     @ViewChild(MatSort, { static: true })
     sort: MatSort;
 
-    displayedColumns: string[] = ["code", "name", "buttons"];
+    displayedColumns: string[] = ["name", "email", "buttons"];
 
-    departments: Department[];
+    users: User[];
     pagination: Pagination;
-    departmentParams: any = {};
+    userParams: any = {};
     model: any = {};
 
     isFiltered: boolean = false;
@@ -36,7 +36,7 @@ export class DepartmentListComponent implements OnInit {
     form: FormGroup;
 
     constructor(
-        private departmentService: DepartmentService,
+        private userService: UserService,
         private route: ActivatedRoute,
         private alert: AlertService,
         private formBuilder: FormBuilder
@@ -44,29 +44,28 @@ export class DepartmentListComponent implements OnInit {
 
     ngOnInit() {
         this.form = this.formBuilder.group({
-            code: [""],
-            name: [""]
+            firstname: [""],
         });
 
-        this.route.data.subscribe(data => {
-            this.departments = data.department.result;
-            this.pagination = data.department.pagination;
+        this.route.data.subscribe((data) => {
+            this.users = data.user.result;
+            this.pagination = data.user.pagination;
         });
     }
 
-    loadDepartment() {
-        this.departmentService
-            .getDepartments(
+    loadUser() {
+        this.userService
+            .getUsers(
                 this.pagination.currentPage,
                 this.pagination.pageSize,
-                this.departmentParams
+                this.userParams
             )
             .subscribe(
-                (res: PaginatedResult<Department[]>) => {
-                    this.departments = res.result;
+                (res: PaginatedResult<User[]>) => {
+                    this.users = res.result;
                     this.pagination = res.pagination;
                 },
-                error => {
+                (error) => {
                     this.alert.Error("", error.statusText);
                 }
             );
@@ -75,15 +74,15 @@ export class DepartmentListComponent implements OnInit {
     pageEvents(event: any) {
         this.pagination.currentPage = event.pageIndex + 1;
         this.pagination.pageSize = event.pageSize;
-        this.loadDepartment();
+        this.loadUser();
     }
 
     sortChange(event: any) {
         this.pagination.currentPage = 1;
-        this.departmentParams.OrderBy = event.active;
-        this.departmentParams.isDescending =
+        this.userParams.OrderBy = event.active;
+        this.userParams.isDescending =
             event.direction === "desc" ? true : false;
-        this.loadDepartment();
+        this.loadUser();
     }
 
     setShowFilterForm() {
@@ -92,15 +91,11 @@ export class DepartmentListComponent implements OnInit {
 
     addFilter() {
         this.showFilterForm = false;
-        if (
-            (this.form.value.code != null && this.form.value.code != "") ||
-            (this.form.value.name != null && this.form.value.name != "")
-        ) {
+        if (this.form.value.code != null && this.form.value.code != "") {
             this.isFiltered = true;
             this.pagination.currentPage = 1;
-            this.departmentParams.code = this.form.value.code;
-            this.departmentParams.name = this.form.value.name;
-            this.loadDepartment();
+            this.userParams.firstname = this.form.value.firstname;
+            this.loadUser();
         }
     }
 
@@ -113,22 +108,21 @@ export class DepartmentListComponent implements OnInit {
     clearFilter() {
         this.isFiltered = false;
         this.pagination.currentPage = 1;
-        this.departmentParams.code = null;
-        this.departmentParams.name = null;
+        this.userParams.firstname = null;
         this.form.reset();
-        this.loadDepartment();
+        this.loadUser();
     }
 
-    deleteDepartment(id: number) {
+    deleteUser(id: number) {
         const confirm = this.alert.Confirm();
-        confirm.afterClosed().subscribe(result => {
+        confirm.afterClosed().subscribe((result) => {
             if (result === true) {
-                this.departmentService.deleteDepartment(id).subscribe(
+                this.userService.deleteUser(id).subscribe(
                     () => {
                         this.alert.Info("", "The data has been deleted");
-                        this.loadDepartment();
+                        this.loadUser();
                     },
-                    error => {
+                    (error) => {
                         this.alert.Error("", error);
                     }
                 );

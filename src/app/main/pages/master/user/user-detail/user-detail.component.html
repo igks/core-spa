@@ -1,0 +1,120 @@
+<div id="my-container" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="accent top-bg"></div>
+    <!-- / TOP BACKGROUND -->
+    <div class="center">
+        <!-- HEADER -->
+        <div
+            class="header accent"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center"
+        >
+            <!-- APP TITLE -->
+            <div
+                class="logo mb-md-0"
+                fxLayout="row"
+                fxLayoutAlign="start center"
+            >
+                <mat-icon
+                    class="logo-icon s-32 mr-16"
+                    [@animate]="{
+                        value: '*',
+                        params: { delay: '300ms', scale: '0.2' }
+                    }"
+                >
+                    person
+                </mat-icon>
+                <span
+                    class="logo-text h1"
+                    [@animate]="{
+                        value: '*',
+                        params: { delay: '300ms', x: '-25px' }
+                    }"
+                >
+                    Detail Profile
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+    <div fxLayout="row" fxLayoutAlign="start center">
+    <img class="image-profile" src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?cs=srgb&dl=amerika-afrika-anak-laki-laki-biasa-saja-bocah-laki-laki-1222271.jpg&fm=jpg">
+    <h2 class="name fuse-white-fg ml-24"> {{user.firstname}} {{user.lastname}} </h2>
+    </div>
+    <div class="content-card p-24">
+    <mat-form-field >
+                    <mat-label>First Name</mat-label>
+                    <input
+                        class="fuse-black-fg"
+                        matInput
+                        disabled
+                        value={{user.firstname}}
+                    />
+                </mat-form-field>
+                <mat-form-field >
+                    <mat-label>Last Name</mat-label>
+                    <input
+                        class="fuse-black-fg"
+                        matInput
+                        disabled
+                        value={{user.lastname}}
+                    />
+                </mat-form-field>
+                <mat-form-field >
+                    <mat-label>Address</mat-label>
+                    <input
+                        class="fuse-black-fg"
+                        matInput
+                        disabled
+                        value={{user.address}}
+                    />
+                </mat-form-field>
+                <mat-form-field >
+                    <mat-label>Phone Number</mat-label>
+                    <input
+                        class="fuse-black-fg"
+                        matInput
+                        disabled
+                        value={{user.phone}}
+                    />
+                </mat-form-field>
+                <mat-form-field >
+                    <mat-label>Email</mat-label>
+                    <input
+                        class="fuse-black-fg"
+                        matInput
+                        disabled
+                        value={{user.email}}
+                    />
+                </mat-form-field>
+
+                <div
+                    fxLayout="column"
+                    fxLayoutAlign="start center"
+                    fxLayout.gt-xs="row"
+                    class="mb-12"
+                >
+                <button
+                        mat-raised-button
+                        class="add-product-button mt-24 mt-md-0 accent-bg fuse-white-fg ml-8"
+                        [routerLink]="['/pages/master/user']"
+                    >
+                        <mat-icon class="mr-8">arrow_back_ios</mat-icon>
+                        <span>Back</span>
+                    </button>
+                    <button
+                        mat-raised-button
+                        class="add-product-button mt-24 mt-md-0 accent-bg fuse-white-fg ml-8"
+                        [routerLink]="['/pages/master/user/form/'+ user.id]"
+                    >
+                        <mat-icon class="mr-8">edit</mat-icon>
+                        <span>Edit</span>
+                    </button>
+                    </div>
+    </div>
+
+    </div>
+    
+</div>
