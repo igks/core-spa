@@ -1,0 +1,286 @@
+<div id="my-container" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="accent top-bg"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div
+            class="header accent"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center"
+        >
+            <!-- APP TITLE -->
+            <div
+                class="logo mb-md-0"
+                fxLayout="row"
+                fxLayoutAlign="start center"
+            >
+                <mat-icon
+                    class="logo-icon s-32 mr-16"
+                    [@animate]="{
+                        value: '*',
+                        params: { delay: '300ms', scale: '0.2' }
+                    }"
+                >
+                    format_list_bulleted
+                </mat-icon>
+                <span
+                    class="logo-text h1"
+                    [@animate]="{
+                        value: '*',
+                        params: { delay: '300ms', x: '-25px' }
+                    }"
+                >
+                    Employee List
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+
+        <div
+            fxLayoutAlign="center center"
+            fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center"
+            class="mb-8"
+        >
+            <div>
+                <!-- ADD BUTTON -->
+                <button
+                    mat-raised-button
+                    [routerLink]="['/pages/master/employee/form']"
+                    class="add-product-button"
+                >
+                    <mat-icon class="mr-8">add_box</mat-icon>
+                    <span>ADD NEW RECORD</span>
+                </button>
+                <!-- / ADD BUTTON -->
+
+                <!-- ADD FILTER BUTTON -->
+                <!-- <button
+                    mat-raised-button
+                    class="ml-8"
+                    [ngClass]="{ 'orange-bg fuse-white-fg': isFiltered }"
+                    [ngClass]="{ 'fuse-white': !isFiltered }"
+                    (click)="isFiltered ? clearFilter() : setShowFilterForm()"
+                >
+                    <mat-icon class="mr-8">filter_list</mat-icon>
+                    <span>{{
+                        !isFiltered ? "ADD FILTER" : "CLEAR FILTER"
+                    }}</span>
+                </button> -->
+                <!-- / ADD FILTER BUTTON -->
+            </div>
+
+            <div fxLayout="row">
+                <!-- Print Button -->
+                <!-- <button
+                    mat-raised-button
+                    [routerLink]="['/pages/report/department']"
+                    class="add-product-button"
+                >
+                    <mat-icon class="mr-8">print</mat-icon>
+                    <span>PRINT</span>
+                </button> -->
+                <!-- End Print Button -->
+            </div>
+        </div>
+
+        <div
+            *ngIf="showFilterForm"
+            class="content-card my-8"
+            fusePerfectScrollbar
+        >
+            <form
+                fxLayout="column"
+                class="mat-card"
+                name="form"
+                [formGroup]="form"
+                class="px-28"
+            >
+                <div
+                    fxLayout="column"
+                    fxLayoutAlign="center center"
+                    fxLayout.gt-xs="row"
+                    fxFlex="1 0 auto"
+                    fxLayoutAlign.gt-xs="space-between center"
+                >
+                    <!-- <h2>Add filter</h2> -->
+                    <div class="mt-12 mb-8">
+                        <button
+                            mat-raised-button
+                            class="add-product-button mt-md-0 mr-8"
+                            (click)="cancelFilter()"
+                        >
+                            <mat-icon class="mr-8">cancel</mat-icon>
+                            <span>CANCEL</span>
+                        </button>
+
+                        <button
+                            mat-raised-button
+                            class="add-product-button mt-md-0 ml-8 accent-bg fuse-white-fg"
+                            (click)="addFilter()"
+                        >
+                            <mat-icon class="mr-8"
+                                >check_circle_outline</mat-icon
+                            >
+                            <span>SET FILTER</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div
+                    fxLayout="row"
+                    fxLayoutAlign="start center"
+                    fxFlex="1 0 auto"
+                    fxLayoutAlign.gt-xs="start center"
+                >
+                    <mat-form-field class="mr-16">
+                        <mat-label>Filter by code</mat-label>
+                        <input
+                            matInput
+                            formControlName="code"
+                            autocomplete="off"
+                        />
+                    </mat-form-field>
+
+                    <mat-form-field class="mr-16">
+                        <mat-label>Filter by name</mat-label>
+                        <input
+                            matInput
+                            formControlName="name"
+                            autocomplete="off"
+                        />
+                    </mat-form-field>
+                </div>
+            </form>
+        </div>
+
+        <!-- CONTENT CARD -->
+        <div
+            *ngIf="!showFilterForm && employees.length == 0"
+            class="content-card"
+            fxLayout="row"
+            fxLayoutAlign="center center"
+            fxFlex="1 0 auto"
+            fxLayoutAlign.gt-xs="center center"
+        >
+            <h2>No Data Available...</h2>
+        </div>
+        <div
+            *ngIf="!showFilterForm && employees.length != 0"
+            class="content-card"
+        >
+            <mat-table
+                class="custom-table"
+                #table
+                [dataSource]="employees"
+                matSort
+                [@animateStagger]="{ value: '50' }"
+                fusePerfectScrollbar
+                matSort
+                (matSortChange)="sortChange($event)"
+            >
+                <!-- Code Column -->
+                <ng-container matColumnDef="firstname">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        class="text-header accent-fg"
+                        >First name</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let employees">
+                        <p class="text-truncate">{{ employees.firstname }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="lastname">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header
+                        class="text-header accent-fg"
+                        >Last name</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let employees">
+                        <p class="text-truncate">{{ employees.lastname }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Buttons Column -->
+                <ng-container matColumnDef="buttons">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        class="text-header accent-fg"
+                        >Option</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let employees">
+                        <div fxFlex="row" fxLayoutAlign="start center">
+                            <button
+                                mat-icon-button
+                                [matMenuTriggerFor]="moreMenu"
+                                aria-label="More"
+                                (click)="$event.stopPropagation()"
+                            >
+                                <mat-icon class="secondary-text"
+                                    >more_vert</mat-icon
+                                >
+                            </button>
+
+                            <mat-menu #moreMenu="matMenu">
+                                <button
+                                    mat-menu-item
+                                    aria-label="edit"
+                                    [routerLink]="[
+                                        '/pages/master/employee/form/' +
+                                            employees.id
+                                    ]"
+                                >
+                                    <mat-icon>edit</mat-icon>
+                                    <span>Edit</span>
+                                </button>
+
+                                <button
+                                    mat-menu-item
+                                    aria-label="remove"
+                                    (click)="deleteEmployee(employees.id)"
+                                >
+                                    <mat-icon>delete</mat-icon>
+                                    <span>Remove</span>
+                                </button>
+                            </mat-menu>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row
+                    *matHeaderRowDef="displayedColumns; sticky: true"
+                ></mat-header-row>
+
+                <mat-row
+                    *matRowDef="let data; columns: displayedColumns"
+                    class="data"
+                    matRipple
+                >
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator
+                #paginator
+                [length]="pagination.totalItems"
+                [pageIndex]="pagination.currentPage - 1"
+                [pageSize]="pagination.pageSize"
+                [pageSizeOptions]="[5, 10, 25, 50]"
+                (page)="pageEvents($event)"
+                showFirstLastButtons="true"
+            >
+            </mat-paginator>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

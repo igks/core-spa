@@ -43,6 +43,13 @@ import { UploadComponent } from "app/layout/components/upload/upload.component";
 import { DownloadComponent } from "app/layout/components/download/download.component";
 import { FileListResolver } from "app/resolvers/file-manager-resolver";
 
+import { EmployeeService } from "app/services/employee.service";
+import { EmployeeListResolver, EmployeeDetailResolver } from "app/resolvers/employee-resolver";
+import { EmployeeListComponent} from "./employee/employee-list/employee-list.component";
+import { EmployeeFormComponent} from "./employee/employee-form/employee-form.component";
+
+
+
 const routes: Routes = [
     {
         path: "",
@@ -99,12 +106,32 @@ const routes: Routes = [
                     file: FileListResolver,
                 },
             },
+            {
+                path: "master/employee",
+                component: EmployeeListComponent,
+                resolve: {
+                    employee: EmployeeListResolver,
+                },
+            },
+            {
+                path: "master/employee/form",
+                component: EmployeeFormComponent,
+            },
+            {
+                path: "master/employee/form/:id",
+                component: EmployeeFormComponent,
+                resolve: {
+                    employee: EmployeeDetailResolver,
+                },
+            },
         ],
     },
 ];
 
 @NgModule({
     declarations: [
+        EmployeeListComponent,
+        EmployeeFormComponent,
         DepartmentListComponent,
         DepartmentFormComponent,
         UserListComponent,
@@ -140,6 +167,9 @@ const routes: Routes = [
         FuseWidgetModule,
     ],
     providers: [
+        EmployeeService,
+        EmployeeListResolver,
+        EmployeeDetailResolver,
         DepartmentService,
         DepartmentListResolver,
         DepartmentDetailResolver,
