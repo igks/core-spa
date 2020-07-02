@@ -182,7 +182,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     }
 
     logout() {
-        localStorage.clear();
+        this.authService.signOut();
         this.alert.Success(
             "Logout Success",
             "You have been logout from the application."

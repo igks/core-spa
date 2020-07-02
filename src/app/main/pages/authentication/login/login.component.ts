@@ -16,6 +16,7 @@ import { AlertService } from "app/services/alert.service";
 })
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
+    model: any = {};
 
     /**
      * Constructor
@@ -67,22 +68,56 @@ export class LoginComponent implements OnInit {
     login() {
         this.authService.login(this.loginForm.value).subscribe(
             (next) => {
-                this.alert.Success("Login Success", "");
-                this.router.navigate(["/dashboard"]);
+                this.loginSuccess();
             },
             (error) => {
-                if (error == "Unauthorized") {
-                    this.alert.Error(
-                        error + "!",
-                        "Seem you don't have an account! Please check your credential or click create account to create new account."
-                    );
-                } else {
-                    this.alert.Error(
-                        "Connection refused!",
-                        "Can not reach the API, please check your internet connection!"
-                    );
-                }
+                this.loginFailed(error);
             }
         );
+    }
+
+    signInWithGoogle() {
+        this.authService.signInWithGoogle().then((user) => {
+            this.authService.socialLogin({ email: user.email }).subscribe(
+                (next) => {
+                    this.loginSuccess();
+                },
+                (error) => {
+                    this.loginFailed(error);
+                }
+            );
+        });
+    }
+
+    signInWithFacebook() {
+        this.authService.signInWithFacebook().then((user) => {
+            this.authService.socialLogin({ email: user.email }).subscribe(
+                (next) => {
+                    this.loginSuccess();
+                },
+                (error) => {
+                    this.loginFailed(error);
+                }
+            );
+        });
+    }
+
+    loginSuccess() {
+        this.alert.Success("Login Success", "");
+        this.router.navigate(["/dashboard"]);
+    }
+
+    loginFailed(error) {
+        if (error == "Unauthorized") {
+            this.alert.Error(
+                error + "!",
+                "Seem you don't have an account! Please check your credential or click create account to create new account."
+            );
+        } else {
+            this.alert.Error(
+                "Connection refused!",
+                "Can not reach the API, please check your internet connection!"
+            );
+        }
     }
 }

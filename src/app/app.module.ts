@@ -37,6 +37,16 @@ import { Report2Component } from "./main/dummy/report2/report2.component";
 import { Transaction1Component } from "./main/dummy/transaction1/transaction1.component";
 import { Transaction2Component } from "./main/dummy/transaction2/transaction2.component";
 
+import {
+    SocialLoginModule,
+    SocialAuthServiceConfig,
+} from "angularx-social-login";
+import {
+    GoogleLoginProvider,
+    FacebookLoginProvider,
+    AmazonLoginProvider,
+} from "angularx-social-login";
+
 const appRoutes: Routes = [
     {
         path: "register",
@@ -114,12 +124,36 @@ const appRoutes: Routes = [
         LayoutModule,
         AppStoreModule,
         ConfirmDialogModule,
+
+        SocialLoginModule,
     ],
-    bootstrap: [AppComponent],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+        {
+            provide: "SocialAuthServiceConfig",
+            useValue: {
+                autoLogin: false,
+                providers: [
+                    {
+                        id: GoogleLoginProvider.PROVIDER_ID,
+                        provider: new GoogleLoginProvider(
+                            "373107389028-e03b36u352arac8m78pcmcclvn18dftg.apps.googleusercontent.com"
+                        ),
+                    },
+                    {
+                        id: FacebookLoginProvider.PROVIDER_ID,
+                        provider: new FacebookLoginProvider("679388146241522"),
+                    },
+                    {
+                        id: AmazonLoginProvider.PROVIDER_ID,
+                        provider: new AmazonLoginProvider("clientId"),
+                    },
+                ],
+            } as SocialAuthServiceConfig,
+        },
         AuthService,
         ErrorInterceptorProvider,
     ],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
