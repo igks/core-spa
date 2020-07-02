@@ -9,6 +9,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { InMemoryWebApiModule } from "angular-in-memory-web-api";
 import { TranslateModule } from "@ngx-translate/core";
 import "hammerjs";
+import {MatSelectInfiniteScrollModule} from 'ng-mat-select-infinite-scroll';
 
 import { FuseModule } from "@fuse/fuse.module";
 import { FuseSharedModule } from "@fuse/shared.module";
@@ -87,6 +88,7 @@ const appRoutes: Routes = [
         BrowserAnimationsModule,
         HttpClientModule,
         RouterModule.forRoot(appRoutes),
+        MatSelectInfiniteScrollModule,
 
         TranslateModule.forRoot(),
         InMemoryWebApiModule.forRoot(FakeDbService, {

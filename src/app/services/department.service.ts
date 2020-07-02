@@ -19,6 +19,14 @@ export class DepartmentService {
         return this.http.get<Department>(this.baseUrl + "department/" + id);
     }
 
+    getAllDepartment(): Observable<Department[]> {
+        return this.http.get<Department[]>(this.baseUrl + "department/");
+    }
+
+    getSubDepartment(id: any): Observable<Department[]> {
+        return this.http.get<Department[]>(this.baseUrl + "department/sub/" + id);
+    }
+
     addDepartment(model: any) {
         return this.http.post(this.baseUrl + "department/", model);
     }

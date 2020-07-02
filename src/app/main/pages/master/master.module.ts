@@ -2,13 +2,13 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
 import { MatChipsModule } from "@angular/material/chips";
-import { MatRippleModule } from "@angular/material/core";
+import { MatRippleModule, MatOption } from "@angular/material/core";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatSelectModule } from "@angular/material/select";
+import { MatSelectModule} from "@angular/material/select";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
@@ -16,6 +16,7 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { AgmCoreModule } from "@agm/core";
 import { MatMenuModule } from "@angular/material/menu";
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseWidgetModule } from "@fuse/components/widget/widget.module";
@@ -44,11 +45,12 @@ import { DownloadComponent } from "app/layout/components/download/download.compo
 import { FileListResolver } from "app/resolvers/file-manager-resolver";
 
 import { EmployeeService } from "app/services/employee.service";
-import { EmployeeListResolver, EmployeeDetailResolver } from "app/resolvers/employee-resolver";
-import { EmployeeListComponent} from "./employee/employee-list/employee-list.component";
-import { EmployeeFormComponent} from "./employee/employee-form/employee-form.component";
-
-
+import {
+    EmployeeListResolver,
+    EmployeeDetailResolver,
+} from "app/resolvers/employee-resolver";
+import { EmployeeListComponent } from "./employee/employee-list/employee-list.component";
+import { EmployeeFormComponent } from "./employee/employee-form/employee-form.component";
 
 const routes: Routes = [
     {
@@ -157,6 +159,7 @@ const routes: Routes = [
         MatTableModule,
         MatTabsModule,
         MatMenuModule,
+        MatAutocompleteModule,
 
         NgxChartsModule,
         AgmCoreModule.forRoot({
