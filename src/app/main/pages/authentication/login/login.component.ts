@@ -77,8 +77,9 @@ export class LoginComponent implements OnInit {
     }
 
     signInWithGoogle() {
-        this.authService.signInWithGoogle().then((user) => {
-            this.authService.socialLogin({ email: user.email }).subscribe(
+        this.authService.signInWithGoogle()
+        .then((user) => {
+           this.authService.socialLogin({ email: user.email }).subscribe(
                 (next) => {
                     this.loginSuccess();
                 },
@@ -86,11 +87,13 @@ export class LoginComponent implements OnInit {
                     this.loginFailed(error);
                 }
             );
-        });
+        })
+        .catch(error => {return null});
     }
 
     signInWithFacebook() {
-        this.authService.signInWithFacebook().then((user) => {
+        this.authService.signInWithFacebook()
+        .then((user) => {
             this.authService.socialLogin({ email: user.email }).subscribe(
                 (next) => {
                     this.loginSuccess();
@@ -99,7 +102,8 @@ export class LoginComponent implements OnInit {
                     this.loginFailed(error);
                 }
             );
-        });
+        })
+        .catch(error => {return null});
     }
 
     loginSuccess() {
