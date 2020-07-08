@@ -52,6 +52,17 @@ import {
 import { EmployeeListComponent } from "./employee/employee-list/employee-list.component";
 import { EmployeeFormComponent } from "./employee/employee-form/employee-form.component";
 
+import { ModuleRightService } from "app/services/module-right.service";
+import {
+    ModuleRightListResolver,
+    ModuleRightDetailResolver,
+} from "app/resolvers/module-right-resolver";
+import { ModuleRightListComponent } from "./module-right/module-right-list/module-right-list.component";
+import { ModuleRightFormComponent } from "./module-right/module-right-form/module-right-form.component";
+
+
+
+
 const routes: Routes = [
     {
         path: "",
@@ -126,6 +137,24 @@ const routes: Routes = [
                     employee: EmployeeDetailResolver,
                 },
             },
+            {
+                path: "master/moduleright",
+                component: ModuleRightListComponent,
+                resolve: {
+                    moduleright: ModuleRightListResolver
+                }
+            },
+            {
+                path: "master/moduleright/form",
+                component: ModuleRightFormComponent
+            },
+            {
+                path: "master/moduleright/form/:id",
+                component: ModuleRightFormComponent,
+                resolve: {
+                    moduleright: ModuleRightDetailResolver
+                }
+            }
         ],
     },
 ];
@@ -142,6 +171,8 @@ const routes: Routes = [
         FilesComponent,
         UploadComponent,
         DownloadComponent,
+        ModuleRightListComponent,
+        ModuleRightFormComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -180,6 +211,9 @@ const routes: Routes = [
         UserListResolver,
         UserDetailResolver,
         FileListResolver,
+        ModuleRightService,
+        ModuleRightListResolver,
+        ModuleRightDetailResolver
     ],
 })
 export class MasterModule {}

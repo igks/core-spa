@@ -81,6 +81,12 @@ export const navigation: FuseNavigation[] = [
                         type: "item",
                         url: "/pages/master/files",
                     },
+                    {
+                        id: "module-right",
+                        title: "Module",
+                        type: "item",
+                        url: "/pages/master/moduleright",
+                    },
                 ],
             },
         ],
