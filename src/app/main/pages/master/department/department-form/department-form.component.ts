@@ -78,8 +78,6 @@ export class DepartmentFormComponent implements OnInit {
     }
 
     submit() {
-        console.log(this.form.value);
-
         if (!this.isUpdate) {
             this.addNewDepartment();
         } else {

@@ -94,8 +94,6 @@ export class UserFormComponent implements OnInit {
             (data) => {
                 this.userService.uploadPhoto(data.id, this.photoFile).subscribe(
                     (data) => {
-                        console.log(data);
-
                         this.alert.Success(
                             "Add Successfully",
                             "Data has been added to the record"
