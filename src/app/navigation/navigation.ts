@@ -87,6 +87,12 @@ export const navigation: FuseNavigation[] = [
                         type: "item",
                         url: "/pages/master/moduleright",
                     },
+                    {
+                        id: "role-group",
+                        title: "Role Group",
+                        type: "item",
+                        url: "/pages/master/rolegroup",
+                    },
                 ],
             },
         ],

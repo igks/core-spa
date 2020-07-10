@@ -8,7 +8,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatSelectModule} from "@angular/material/select";
+import { MatSelectModule } from "@angular/material/select";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
@@ -16,7 +16,8 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { AgmCoreModule } from "@agm/core";
 import { MatMenuModule } from "@angular/material/menu";
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 
 import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseWidgetModule } from "@fuse/components/widget/widget.module";
@@ -60,8 +61,13 @@ import {
 import { ModuleRightListComponent } from "./module-right/module-right-list/module-right-list.component";
 import { ModuleRightFormComponent } from "./module-right/module-right-form/module-right-form.component";
 
-
-
+import { RoleGroupService } from "app/services/role-group.service";
+import {
+    RoleGroupListResolver,
+    RoleGroupDetailResolver,
+} from "app/resolvers/role-group-resolver";
+import { RoleGroupListComponent } from "./role-group/role-group-list/role-group-list.component";
+import { RoleGroupFormComponent } from "./role-group/role-group-form/role-group-form.component";
 
 const routes: Routes = [
     {
@@ -141,20 +147,38 @@ const routes: Routes = [
                 path: "master/moduleright",
                 component: ModuleRightListComponent,
                 resolve: {
-                    moduleright: ModuleRightListResolver
-                }
+                    moduleright: ModuleRightListResolver,
+                },
             },
             {
                 path: "master/moduleright/form",
-                component: ModuleRightFormComponent
+                component: ModuleRightFormComponent,
             },
             {
                 path: "master/moduleright/form/:id",
                 component: ModuleRightFormComponent,
                 resolve: {
-                    moduleright: ModuleRightDetailResolver
-                }
-            }
+                    moduleright: ModuleRightDetailResolver,
+                },
+            },
+            {
+                path: "master/rolegroup",
+                component: RoleGroupListComponent,
+                resolve: {
+                    roleGroup: RoleGroupListResolver,
+                },
+            },
+            {
+                path: "master/rolegroup/form",
+                component: RoleGroupFormComponent,
+            },
+            {
+                path: "master/rolegroup/form/:id",
+                component: RoleGroupFormComponent,
+                resolve: {
+                    roleGroup: RoleGroupDetailResolver,
+                },
+            },
         ],
     },
 ];
@@ -172,7 +196,9 @@ const routes: Routes = [
         UploadComponent,
         DownloadComponent,
         ModuleRightListComponent,
-        ModuleRightFormComponent
+        ModuleRightFormComponent,
+        RoleGroupListComponent,
+        RoleGroupFormComponent,
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -191,6 +217,7 @@ const routes: Routes = [
         MatTabsModule,
         MatMenuModule,
         MatAutocompleteModule,
+        MatCheckboxModule,
 
         NgxChartsModule,
         AgmCoreModule.forRoot({
@@ -213,7 +240,10 @@ const routes: Routes = [
         FileListResolver,
         ModuleRightService,
         ModuleRightListResolver,
-        ModuleRightDetailResolver
+        ModuleRightDetailResolver,
+        RoleGroupService,
+        RoleGroupListResolver,
+        RoleGroupDetailResolver,
     ],
 })
 export class MasterModule {}

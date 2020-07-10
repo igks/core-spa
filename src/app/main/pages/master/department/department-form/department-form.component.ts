@@ -7,9 +7,6 @@ import { EmployeeService } from "app/services/employee.service";
 import { AlertService } from "app/services/alert.service";
 import { fuseAnimations } from "@fuse/animations";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Pagination, PaginatedResult } from "app/models/pagination.model";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
 
 @Component({
     selector: "app-department-form",

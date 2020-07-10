@@ -6,3 +6,4 @@ export interface Department {
     managerId: number;
     assistantId: number;
 }
+ 
