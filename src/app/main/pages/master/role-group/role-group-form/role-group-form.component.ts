@@ -92,6 +92,9 @@ export class RoleGroupFormComponent implements OnInit {
 
     // validate selected module, remove module id from selected module list if actual module was remove in database
     validateModule() {
+        this.validReadModules.length = 0;
+        this.validWriteModules.length = 0;
+
         this.selectedReadModules.map((id) => {
             if (this.modulesRightId.includes(id)) {
                 this.validReadModules.push(id);
@@ -104,24 +107,17 @@ export class RoleGroupFormComponent implements OnInit {
             }
         });
 
-        if (this.validReadModules.length > 0) {
-            this.form.patchValue({
-                modulesReadId: this.validReadModules,
-            });
-        } else {
-            this.form.patchValue({
-                modulesReadId: null,
-            });
-        }
-        if (this.validWriteModules.length > 0) {
-            this.form.patchValue({
-                modulesWriteId: this.validWriteModules,
-            });
-        } else {
-            this.form.patchValue({
-                modulesWriteId: null,
-            });
-        }
+        this.form.patchValue({
+            modulesReadId:
+                this.validReadModules.length > 0 ? this.validReadModules : null,
+        });
+
+        this.form.patchValue({
+            modulesWriteId:
+                this.validWriteModules.length > 0
+                    ? this.validWriteModules
+                    : null,
+        });
     }
 
     addNewGroup() {
@@ -155,8 +151,6 @@ export class RoleGroupFormComponent implements OnInit {
 
     submit() {
         this.validateModule();
-        // console.log(this.form.value);
-        // return;
 
         if (!this.isUpdate) {
             this.addNewGroup();
@@ -181,5 +175,43 @@ export class RoleGroupFormComponent implements OnInit {
         } else {
             this.selectedWriteModules.push(moduleId);
         }
+    }
+
+    selectAllReadAccess() {
+        this.moduleRights.map((module) => {
+            this.readAccess[module.id] = true;
+            if (!this.selectedReadModules.includes(module.id)) {
+                this.selectedReadModules.push(module.id);
+            }
+        });
+    }
+
+    clearAllReadAccess() {
+        this.moduleRights.map((module) => {
+            this.readAccess[module.id] = false;
+            this.selectedReadModules.length = 0;
+            this.form.patchValue({
+                modulesReadId: null,
+            });
+        });
+    }
+
+    selectAllWriteAccess() {
+        this.moduleRights.map((module) => {
+            this.writeAccess[module.id] = true;
+            if (!this.selectedWriteModules.includes(module.id)) {
+                this.selectedWriteModules.push(module.id);
+            }
+        });
+    }
+
+    clearAllWriteAccess() {
+        this.moduleRights.map((module) => {
+            this.writeAccess[module.id] = false;
+            this.selectedWriteModules.length = 0;
+            this.form.patchValue({
+                modulesWriteId: null,
+            });
+        });
     }
 }

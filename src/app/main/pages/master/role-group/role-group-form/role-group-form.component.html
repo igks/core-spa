@@ -98,8 +98,38 @@
                         <mat-header-cell
                             *matHeaderCellDef
                             class="text-header accent-fg center-column"
-                            >Read access</mat-header-cell
                         >
+                            Read access
+                            <button
+                                mat-icon-button
+                                [matMenuTriggerFor]="moreMenu"
+                                aria-label="More"
+                                (click)="$event.stopPropagation()"
+                            >
+                                <mat-icon class="secondary-text"
+                                    >more_vert</mat-icon
+                                >
+                            </button>
+                            <mat-menu #moreMenu="matMenu">
+                                <button
+                                    mat-menu-item
+                                    aria-label="select all"
+                                    (click)="selectAllReadAccess()"
+                                >
+                                    <mat-icon>check</mat-icon>
+                                    <span>Select all</span>
+                                </button>
+
+                                <button
+                                    mat-menu-item
+                                    aria-label="clear all"
+                                    (click)="clearAllReadAccess()"
+                                >
+                                    <mat-icon>clear</mat-icon>
+                                    <span>Clear all</span>
+                                </button>
+                            </mat-menu>
+                        </mat-header-cell>
                         <mat-cell
                             *matCellDef="let moduleRights"
                             class="center-column"
@@ -121,8 +151,38 @@
                         <mat-header-cell
                             *matHeaderCellDef
                             class="text-header accent-fg center-column"
-                            >Write access</mat-header-cell
                         >
+                            Write access
+                            <button
+                                mat-icon-button
+                                [matMenuTriggerFor]="moreMenu"
+                                aria-label="More"
+                                (click)="$event.stopPropagation()"
+                            >
+                                <mat-icon class="secondary-text"
+                                    >more_vert</mat-icon
+                                >
+                            </button>
+                            <mat-menu #moreMenu="matMenu">
+                                <button
+                                    mat-menu-item
+                                    aria-label="select all"
+                                    (click)="selectAllWriteAccess()"
+                                >
+                                    <mat-icon>check</mat-icon>
+                                    <span>Select all</span>
+                                </button>
+
+                                <button
+                                    mat-menu-item
+                                    aria-label="clear all"
+                                    (click)="clearAllWriteAccess()"
+                                >
+                                    <mat-icon>clear</mat-icon>
+                                    <span>Clear all</span>
+                                </button>
+                            </mat-menu>
+                        </mat-header-cell>
                         <mat-cell
                             *matCellDef="let moduleRights"
                             class="text-center center-column"
