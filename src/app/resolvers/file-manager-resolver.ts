@@ -8,8 +8,6 @@ import { FilesService } from "app/services/files.service";
 
 @Injectable()
 export class FileListResolver implements Resolve<FileList[]> {
-    pageNumber: number;
-    pageSize: number;
     constructor(
         private fileService: FilesService,
         private router: Router,
@@ -17,9 +15,7 @@ export class FileListResolver implements Resolve<FileList[]> {
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<FileList[]> {
-        this.pageNumber = 1;
-        this.pageSize = this.fileService.itemPerPage;
-        return this.fileService.getFiles(this.pageNumber, this.pageSize).pipe(
+        return this.fileService.getFiles().pipe(
             catchError((error) => {
                 this.alert.Error("", error.statusText);
                 this.router.navigate(["/dashboard"]);

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
-import { map, retry, catchError } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 import { environment } from "environments/environment";
 import { Department } from "app/models/department.model";
 import { PaginatedResult } from "app/models/pagination.model";
@@ -24,7 +24,9 @@ export class DepartmentService {
     }
 
     getSubDepartment(id: any): Observable<Department[]> {
-        return this.http.get<Department[]>(this.baseUrl + "department/sub/" + id);
+        return this.http.get<Department[]>(
+            this.baseUrl + "department/sub/" + id
+        );
     }
 
     addDepartment(model: any) {
@@ -44,30 +46,24 @@ export class DepartmentService {
     }
 
     getDepartments(
-        page?,
-        itemsPerPage?,
-        departmentParams?
+        page = 1,
+        itemsPerPage = this.itemPerPage,
+        departmentParams = null
     ): Observable<PaginatedResult<Department[]>> {
         const paginatedResult: PaginatedResult<
             Department[]
         > = new PaginatedResult<Department[]>();
 
         let params = new HttpParams();
-        if (page != null && itemsPerPage != null) {
-            params = params.append("pageNumber", page);
-            params = params.append("pageSize", itemsPerPage);
-        }
+        params = params.append("pageNumber", page.toString());
+        params = params.append("pageSize", itemsPerPage.toString());
+
         if (departmentParams != null) {
-            if (departmentParams.code != null) {
-                params = params.append("code", departmentParams.code);
-            }
-            if (departmentParams.name != null) {
-                params = params.append("name", departmentParams.name);
-            }
-            if (departmentParams.OrderBy != null) {
-                params = params.append("OrderBy", departmentParams.OrderBy);
-                params = params.append("isDescending", departmentParams.isDescending);
-            }
+            Object.keys(departmentParams).forEach((key) => {
+                if (departmentParams[key] != null) {
+                    params = params.append(key, departmentParams[key]);
+                }
+            });
         }
 
         return this.http

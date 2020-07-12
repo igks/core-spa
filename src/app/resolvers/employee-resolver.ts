@@ -8,8 +8,6 @@ import { AlertService } from "app/services/alert.service";
 
 @Injectable()
 export class EmployeeListResolver implements Resolve<Employee[]> {
-    pageNumber: number;
-    pageSize: number;
     constructor(
         private employeeService: EmployeeService,
         private router: Router,
@@ -17,17 +15,13 @@ export class EmployeeListResolver implements Resolve<Employee[]> {
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<Employee[]> {
-        this.pageNumber = 1;
-        this.pageSize = this.employeeService.itemPerPage;
-        return this.employeeService
-            .getEmployees(this.pageNumber, this.pageSize)
-            .pipe(
-                catchError((error) => {
-                    this.alert.Error("", error.statusText);
-                    this.router.navigate(["/dashboard"]);
-                    return of(null);
-                })
-            );
+        return this.employeeService.getEmployees().pipe(
+            catchError((error) => {
+                this.alert.Error("", error.statusText);
+                this.router.navigate(["/dashboard"]);
+                return of(null);
+            })
+        );
     }
 }
 

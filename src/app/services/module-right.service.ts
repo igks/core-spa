@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
-import { map, retry, catchError } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 import { environment } from "environments/environment";
 import { ModuleRight } from "app/models/module-right.model";
 import { PaginatedResult } from "app/models/pagination.model";
@@ -36,30 +36,24 @@ export class ModuleRightService {
     }
 
     getModules(
-        page?,
-        itemsPerPage?,
-        moduleParams?
+        page = 1,
+        itemsPerPage = this.itemPerPage,
+        moduleParams = null
     ): Observable<PaginatedResult<ModuleRight[]>> {
         const paginatedResult: PaginatedResult<
             ModuleRight[]
         > = new PaginatedResult<ModuleRight[]>();
 
         let params = new HttpParams();
-        if (page != null && itemsPerPage != null) {
-            params = params.append("pageNumber", page);
-            params = params.append("pageSize", itemsPerPage);
-        }
+        params = params.append("pageNumber", page.toString());
+        params = params.append("pageSize", itemsPerPage.toString());
+
         if (moduleParams != null) {
-            if (moduleParams.code != null) {
-                params = params.append("code", moduleParams.code);
-            }
-            if (moduleParams.name != null) {
-                params = params.append("name", moduleParams.name);
-            }
-            if (moduleParams.OrderBy != null) {
-                params = params.append("OrderBy", moduleParams.OrderBy);
-                params = params.append("isDescending", moduleParams.isDescending);
-            }
+            Object.keys(moduleParams).forEach((key) => {
+                if (moduleParams[key] != null) {
+                    params = params.append(key, moduleParams[key]);
+                }
+            });
         }
 
         return this.http

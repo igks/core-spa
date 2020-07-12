@@ -3,10 +3,9 @@ import {
     HttpClient,
     HttpRequest,
     HttpEvent,
-    HttpResponse,
     HttpParams,
 } from "@angular/common/http";
-import { of, Observable } from "rxjs";
+import { Observable } from "rxjs";
 import { environment } from "environments/environment";
 import { PaginatedResult } from "app/models/pagination.model";
 import { map } from "rxjs/operators";
@@ -15,29 +14,18 @@ import { map } from "rxjs/operators";
     providedIn: "root",
 })
 export class FilesService {
-    private baseApiUrl: string;
-    private apiDownloadUrl: string;
-    private apiUploadUrl: string;
-    private apiDeleteUrl: string;
-    private apiCreateUrl: string;
-    private apiFileUrl: string;
+    private baseUrl = environment.apiUrl;
+    private apiFileUrl = environment.apiUrl + "files/file-list";
 
     public itemPerPage = environment.itemPerPage;
 
-    constructor(private http: HttpClient) {
-        this.baseApiUrl = environment.apiUrl;
-        this.apiDownloadUrl = this.baseApiUrl + "files/download";
-        this.apiUploadUrl = this.baseApiUrl + "files/upload";
-        this.apiDeleteUrl = this.baseApiUrl + "files/delete";
-        this.apiCreateUrl = this.baseApiUrl + "files/create";
-        this.apiFileUrl = this.baseApiUrl + "files/file-list";
-    }
+    constructor(private http: HttpClient) {}
 
     public downloadFile(file: string): Observable<HttpEvent<Blob>> {
         return this.http.request(
             new HttpRequest(
                 "GET",
-                `${this.apiDownloadUrl}?file=${file}`,
+                this.baseUrl + "files/download?file=" + file,
                 null,
                 {
                     reportProgress: true,
@@ -52,32 +40,31 @@ export class FilesService {
         formData.append("file", file);
 
         return this.http.request(
-            new HttpRequest("POST", this.apiUploadUrl, formData, {
+            new HttpRequest("POST", this.baseUrl + "files/upload", formData, {
                 reportProgress: true,
             })
         );
     }
 
     public getFiles(
-        page?,
-        itemsPerPage?,
-        filesParams?
+        page = 1,
+        itemsPerPage = this.itemPerPage,
+        filesParams = null
     ): Observable<PaginatedResult<FileList[]>> {
         const paginatedResult: PaginatedResult<
             FileList[]
         > = new PaginatedResult<FileList[]>();
 
         let params = new HttpParams();
-
-        if (page != null && itemsPerPage != null) {
-            params = params.append("pageNumber", page);
-            params = params.append("pageSize", itemsPerPage);
-        }
+        params = params.append("pageNumber", page.toString());
+        params = params.append("pageSize", itemsPerPage.toString());
 
         if (filesParams != null) {
-            if (filesParams.name != null) {
-                params = params.append("name", filesParams.name);
-            }
+            Object.keys(filesParams).forEach((key) => {
+                if (filesParams[key] != null) {
+                    params = params.append(key, filesParams[key]);
+                }
+            });
         }
 
         return this.http
@@ -99,10 +86,12 @@ export class FilesService {
     }
 
     public deleteFile(file: string): Observable<string> {
-        return this.http.delete<string>(`${this.apiDeleteUrl}?file=${file}`);
+        return this.http.delete<string>(
+            this.baseUrl + "files/delete?file=" + file
+        );
     }
 
     public createFile(): Observable<string> {
-        return this.http.post<string>(this.apiCreateUrl, null);
+        return this.http.post<string>(this.baseUrl + "files/create", null);
     }
 }

@@ -8,8 +8,6 @@ import { AlertService } from "app/services/alert.service";
 
 @Injectable()
 export class ModuleRightListResolver implements Resolve<ModuleRight[]> {
-    pageNumber: number;
-    pageSize: number;
     constructor(
         private moduleService: ModuleRightService,
         private router: Router,
@@ -17,17 +15,13 @@ export class ModuleRightListResolver implements Resolve<ModuleRight[]> {
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<ModuleRight[]> {
-        this.pageNumber = 1;
-        this.pageSize = this.moduleService.itemPerPage;
-        return this.moduleService
-            .getModules(this.pageNumber, this.pageSize)
-            .pipe(
-                catchError(error => {
-                    this.alert.Error("", error.statusText);
-                    this.router.navigate(["/dashboard"]);
-                    return of(null);
-                })
-            );
+        return this.moduleService.getModules().pipe(
+            catchError((error) => {
+                this.alert.Error("", error.statusText);
+                this.router.navigate(["/dashboard"]);
+                return of(null);
+            })
+        );
     }
 }
 
@@ -41,7 +35,7 @@ export class ModuleRightDetailResolver implements Resolve<ModuleRight> {
 
     resolve(route: ActivatedRouteSnapshot): Observable<ModuleRight> {
         return this.moduleService.getModule(route.params.id).pipe(
-            catchError(error => {
+            catchError((error) => {
                 this.alert.Error("", error.statusText);
                 this.router.navigate(["/pages/master/moduleright"]);
                 return of(null);

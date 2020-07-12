@@ -8,8 +8,6 @@ import { UserService } from "app/services/user.service";
 
 @Injectable()
 export class UserListResolver implements Resolve<User[]> {
-    pageNumber: number;
-    pageSize: number;
     constructor(
         private userService: UserService,
         private router: Router,
@@ -17,9 +15,7 @@ export class UserListResolver implements Resolve<User[]> {
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
-        this.pageNumber = 1;
-        this.pageSize = this.userService.itemPerPage;
-        return this.userService.getUsers(this.pageNumber, this.pageSize).pipe(
+        return this.userService.getUsers().pipe(
             catchError((error) => {
                 this.alert.Error("", error.statusText);
                 this.router.navigate(["/dashboard"]);

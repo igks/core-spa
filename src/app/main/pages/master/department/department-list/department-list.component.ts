@@ -14,7 +14,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
     templateUrl: "./department-list.component.html",
     styleUrls: ["./department-list.component.scss"],
     animations: fuseAnimations,
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
 })
 export class DepartmentListComponent implements OnInit {
     @ViewChild(MatPaginator, { static: true })
@@ -45,10 +45,10 @@ export class DepartmentListComponent implements OnInit {
     ngOnInit() {
         this.form = this.formBuilder.group({
             code: [""],
-            name: [""]
+            name: [""],
         });
 
-        this.route.data.subscribe(data => {
+        this.route.data.subscribe((data) => {
             this.departments = data.department.result;
             this.pagination = data.department.pagination;
         });
@@ -66,7 +66,7 @@ export class DepartmentListComponent implements OnInit {
                     this.departments = res.result;
                     this.pagination = res.pagination;
                 },
-                error => {
+                (error) => {
                     this.alert.Error("", error.statusText);
                 }
             );
@@ -121,14 +121,14 @@ export class DepartmentListComponent implements OnInit {
 
     deleteDepartment(id: number) {
         const confirm = this.alert.Confirm();
-        confirm.afterClosed().subscribe(result => {
+        confirm.afterClosed().subscribe((result) => {
             if (result === true) {
                 this.departmentService.deleteDepartment(id).subscribe(
                     () => {
                         this.alert.Info("", "The data has been deleted");
                         this.loadDepartment();
                     },
-                    error => {
+                    (error) => {
                         this.alert.Error("", error);
                     }
                 );

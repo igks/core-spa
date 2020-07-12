@@ -1,6 +1,7 @@
 @import "src/@fuse/scss/fuse";
 
 #my-container {
+    overflow-y: auto;
     .top-bg {
         @include media-breakpoint("lt-md") {
             height: 225px;
@@ -20,9 +21,8 @@
     }
 
     .image-profile {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
     }
-    
 }

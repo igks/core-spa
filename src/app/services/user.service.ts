@@ -1,12 +1,7 @@
 import { Injectable } from "@angular/core";
-import {
-    HttpClient,
-    HttpParams,
-    HttpEvent,
-    HttpRequest,
-} from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
-import { map, retry, catchError } from "rxjs/operators";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 import { environment } from "environments/environment";
 import { User } from "app/models/user.model";
 import { PaginatedResult } from "app/models/pagination.model";
@@ -43,33 +38,28 @@ export class UserService {
     }
 
     getUserReport() {
-        return this.http.get(this.baseUrl + "reoort/user/");
+        return this.http.get(this.baseUrl + "report/user/");
     }
 
     getUsers(
-        page?,
-        itemPerPage?,
-        userParams?
+        page = 1,
+        itemPerPage = this.itemPerPage,
+        userParams = null
     ): Observable<PaginatedResult<User[]>> {
         const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<
             User[]
         >();
 
         let params = new HttpParams();
-        if (page != null && itemPerPage != null) {
-            params = params.append("pageNumber", page);
-            params = params.append("pageSize", itemPerPage);
-        }
+        params = params.append("pageNumber", page.toString());
+        params = params.append("pageSize", itemPerPage.toString());
 
         if (userParams != null) {
-            if (userParams.fistname != null) {
-                params = params.append("firstname", userParams.firstname);
-            }
-
-            if (userParams.OrderBy != null) {
-                params = params.append("OrderBy", userParams.OrderBy);
-                params = params.append("isDescending", userParams.isDescending);
-            }
+            Object.keys(userParams).forEach((key) => {
+                if (userParams[key] != null) {
+                    params = params.append(key, userParams[key]);
+                }
+            });
         }
 
         return this.http

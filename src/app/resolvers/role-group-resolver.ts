@@ -8,8 +8,6 @@ import { AlertService } from "app/services/alert.service";
 
 @Injectable()
 export class RoleGroupListResolver implements Resolve<RoleGroup[]> {
-    pageNumber: number;
-    pageSize: number;
     constructor(
         private groupService: RoleGroupService,
         private router: Router,
@@ -17,17 +15,13 @@ export class RoleGroupListResolver implements Resolve<RoleGroup[]> {
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<RoleGroup[]> {
-        this.pageNumber = 1;
-        this.pageSize = this.groupService.itemPerPage;
-        return this.groupService
-            .getRoleGroups(this.pageNumber, this.pageSize)
-            .pipe(
-                catchError((error) => {
-                    this.alert.Error("", error.statusText);
-                    this.router.navigate(["/dashboard"]);
-                    return of(null);
-                })
-            );
+        return this.groupService.getRoleGroups().pipe(
+            catchError((error) => {
+                this.alert.Error("", error.statusText);
+                this.router.navigate(["/dashboard"]);
+                return of(null);
+            })
+        );
     }
 }
 

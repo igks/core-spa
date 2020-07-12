@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { ConfirmDialogComponent } from "app/layout/components/confirm-dialog/confirm-dialog.component";
 
 @Injectable({
-    providedIn: "root"
+    providedIn: "root",
 })
 export class AlertService {
     constructor(private toastr: ToastrService, private dialog: MatDialog) {}

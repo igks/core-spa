@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
-import { map, retry, catchError } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 import { environment } from "environments/environment";
 import { RoleGroup } from "app/models/role-group.model";
 import { PaginatedResult } from "app/models/pagination.model";
@@ -36,33 +36,24 @@ export class RoleGroupService {
     }
 
     getRoleGroups(
-        page?,
-        itemPerPage?,
-        roleGroupParams?
+        page = 1,
+        itemPerPage = this.itemPerPage,
+        roleGroupParams = null
     ): Observable<PaginatedResult<RoleGroup[]>> {
         const paginatedResult: PaginatedResult<
             RoleGroup[]
         > = new PaginatedResult<RoleGroup[]>();
 
         let params = new HttpParams();
-        if (page != null && itemPerPage != null) {
-            params = params.append("pageNumber", page);
-            params = params.append("pageSize", itemPerPage);
-        }
+        params = params.append("pageNumber", page.toString());
+        params = params.append("pageSize", itemPerPage.toString());
+
         if (roleGroupParams != null) {
-            if (roleGroupParams.code != null) {
-                params = params.append("code", roleGroupParams.code);
-            }
-            if (roleGroupParams.name != null) {
-                params = params.append("name", roleGroupParams.name);
-            }
-            if (roleGroupParams.OrderBy != null) {
-                params = params.append("OrderBy", roleGroupParams.OrderBy);
-                params = params.append(
-                    "isDescending",
-                    roleGroupParams.isDescending
-                );
-            }
+            Object.keys(roleGroupParams).forEach((key) => {
+                if (roleGroupParams != null) {
+                    params = params.append(key, roleGroupParams[key]);
+                }
+            });
         }
 
         return this.http

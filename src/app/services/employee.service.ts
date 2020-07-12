@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
-import { map, retry, catchError } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 import { environment } from "environments/environment";
 import { Employee } from "app/models/employee.model";
 import { PaginatedResult } from "app/models/pagination.model";
@@ -40,33 +40,24 @@ export class EmployeeService {
     }
 
     getEmployees(
-        page?,
-        itemsPerPage?,
-        employeeParams?
+        page = 1,
+        itemsPerPage = this.itemPerPage,
+        employeeParams = null
     ): Observable<PaginatedResult<Employee[]>> {
         const paginatedResult: PaginatedResult<
             Employee[]
         > = new PaginatedResult<Employee[]>();
 
         let params = new HttpParams();
-        if (page != null && itemsPerPage != null) {
-            params = params.append("pageNumber", page);
-            params = params.append("pageSize", itemsPerPage);
-        }
+        params = params.append("pageNumber", page.toString());
+        params = params.append("pageSize", itemsPerPage.toString());
+
         if (employeeParams != null) {
-            if (employeeParams.firstname != null) {
-                params = params.append("firstname", employeeParams.firstname);
-            }
-            if (employeeParams.lastname != null) {
-                params = params.append("lastname", employeeParams.lastname);
-            }
-            if (employeeParams.OrderBy != null) {
-                params = params.append("OrderBy", employeeParams.OrderBy);
-                params = params.append(
-                    "isDescending",
-                    employeeParams.isDescending
-                );
-            }
+            Object.keys(employeeParams).forEach((key) => {
+                if (employeeParams[key] != null) {
+                    params = params.append(key, employeeParams[key]);
+                }
+            });
         }
 
         return this.http
